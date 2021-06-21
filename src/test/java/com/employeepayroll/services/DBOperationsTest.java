@@ -22,4 +22,11 @@ public class DBOperationsTest {
         String name="Anuj", salary="3000000";
         Assert.assertEquals(1,dbOperations.updateSalary(name,salary));
     }
+
+    @Test
+    public void givenPreparedStatementQuery_WhenExecuted_RetrunNumberOfRowsAffected() {
+        EmployeePayrollDBOperations dbOperations = new EmployeePayrollDBOperations();
+        Assert.assertEquals(1,dbOperations.updateSalaryUsingPreparedStatement("Apoorv", "300000"));
+
+    }
 }
