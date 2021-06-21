@@ -3,7 +3,6 @@ package com.employeepayroll.connections;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.security.auth.login.Configuration;
 import java.sql.Connection;
 import java.sql.SQLException;
 
