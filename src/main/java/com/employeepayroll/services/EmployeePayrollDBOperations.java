@@ -11,13 +11,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RetrieveData {
-        public int id;
-        public String name;
-        public  String salary;
-        public LocalDate startDate;
+public class EmployeePayrollDBOperations {
 
-    public List<Employee> ReadTableData(String query){
+    Connection connection;
+    public int id;
+    public String name;
+    public  String salary;
+    public LocalDate startDate;
+
+    public List<Employee> retrieveData(String query){
         getConnections newConnection = new getConnections();
         List<Employee> employeeList = new ArrayList<>();
         try(Connection connection = newConnection.getDBConnection()) {
@@ -37,4 +39,16 @@ public class RetrieveData {
         return employeeList;
     }
 
+    public int updateSalary(String name, String salary){
+        getConnections newConnection = new getConnections();
+        String query = String.format("update employee_payroll set salary='%.2f' where name='%s'", Double.parseDouble(salary), name);
+
+        try(Connection connection = newConnection.getDBConnection() ){
+            Statement statement = connection.createStatement();
+            return statement.executeUpdate(query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
 }
