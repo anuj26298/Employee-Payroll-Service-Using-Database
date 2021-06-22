@@ -10,7 +10,6 @@ import java.util.List;
 
 public class EmployeePayrollDBOperations {
 
-    Connection connection;
     public int id;
     public String name;
     public  String salary;
@@ -62,5 +61,11 @@ public class EmployeePayrollDBOperations {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public List<Employee> employeesWithInDateRange(LocalDate date1, LocalDate date2){
+        String query = String.format("select * from employee_payroll where startdate between '%s' and '%s'",
+                Date.valueOf(date1), Date.valueOf(date2));
+        return retrieveData(query);
     }
 }

@@ -4,6 +4,7 @@ import com.employeepayroll.entity.Employee;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class DBOperationsTest {
@@ -28,5 +29,12 @@ public class DBOperationsTest {
         EmployeePayrollDBOperations dbOperations = new EmployeePayrollDBOperations();
         Assert.assertEquals(1,dbOperations.updateSalaryUsingPreparedStatement("Apoorv", "300000"));
 
+    }
+
+    @Test
+    public void givenDateRange_ReturnEmployeesBetweenGivenDateRange() {
+        EmployeePayrollDBOperations dbOperations = new EmployeePayrollDBOperations();
+        Assert.assertEquals(3, dbOperations.employeesWithInDateRange(LocalDate.of(2020,12,23)
+                ,LocalDate.of(2021,04,26)).size());
     }
 }
