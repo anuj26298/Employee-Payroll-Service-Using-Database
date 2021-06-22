@@ -10,7 +10,7 @@ public class getConnectionsTest {
 
     @Test
     public void givenDataBase_WhenCheckingJDBC_Return() throws SQLException {
-        getConnections getconnections = new getConnections();
+        GetConnections getconnections = new GetConnections();
         Connection connection = getconnections.getDBConnection();
         Assert.assertNotNull(connection);
         connection.close();

@@ -1,6 +1,6 @@
 package com.employeepayroll.services;
 
-import com.employeepayroll.connections.getConnections;
+import com.employeepayroll.connections.GetConnections;
 import com.employeepayroll.entity.Employee;
 
 import java.sql.*;
@@ -19,7 +19,7 @@ public class EmployeePayrollDBOperations {
     public LocalDate startDate;
 
     public List<Employee> retrieveData(String empName) {
-        getConnections newConnection = new getConnections();
+        GetConnections newConnection = new GetConnections();
         List<Employee> employeeList = new ArrayList<>();
         try (Connection connection = newConnection.getDBConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from employee_payroll" +
@@ -42,7 +42,7 @@ public class EmployeePayrollDBOperations {
     }
 
     public int updateSalary(String name, String salary) {
-        getConnections newConnection = new getConnections();
+        GetConnections newConnection = new GetConnections();
         try (Connection connection = newConnection.getDBConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("update employee_payroll set " +
                     "salary=? where name=?");
@@ -56,7 +56,7 @@ public class EmployeePayrollDBOperations {
     }
 
     public int updateSalaryUsingPreparedStatement(String name, String salary) {
-        getConnections newConnection = new getConnections();
+        GetConnections newConnection = new GetConnections();
 
         try (Connection connection = newConnection.getDBConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("update employee_payroll set " +
