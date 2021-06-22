@@ -8,12 +8,14 @@ public class Employee {
     public int id;
     public String name;
     public String salary;
+    public String gender;
     public LocalDate startDate;
 
-    public Employee(int id, String name, String salary, LocalDate startDate) {
+    public Employee(int id, String name, String salary,String gender, LocalDate startDate) {
         this.id = id;
         this.name = name;
         this.salary = salary;
+        this.gender = gender;
         this.startDate = startDate;
     }
 
@@ -23,6 +25,7 @@ public class Employee {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", salary='" + salary + '\'' +
+                ", gender=" + gender +
                 ", startDate=" + startDate +
                 '}';
     }
@@ -37,6 +40,7 @@ public class Employee {
 
         return (id == employee.id &&
                 (employee.salary).equals(salary) &&
+                employee.gender == gender &&
                 (name == employee.name) &&
                 startDate == employee.startDate)
                 ;

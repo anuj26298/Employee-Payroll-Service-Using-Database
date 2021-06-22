@@ -12,9 +12,8 @@ public class DBOperationsTest {
     @Test
     public void givenQueryToReadData_WhenExecuted_ReturnTrueIfSuccessfullyExecuted() {
         EmployeePayrollDBOperations dbOperaitons = new EmployeePayrollDBOperations();
-        String query = "select * from employee_payroll";
-        List<Employee> employeeList = dbOperaitons.retrieveData(query);
-        Assert.assertEquals(5, employeeList.size());
+        List<Employee> employeeList = dbOperaitons.retrieveData("Harsh");
+        Assert.assertEquals("30000", employeeList.get(0).salary);
 
     }
     @Test
@@ -25,7 +24,7 @@ public class DBOperationsTest {
     }
 
     @Test
-    public void givenPreparedStatementQuery_WhenExecuted_RetrunNumberOfRowsAffected() {
+    public void givenPreparedStatementQuery_WhenExecuted_ReturnNumberOfRowsAffected() {
         EmployeePayrollDBOperations dbOperations = new EmployeePayrollDBOperations();
         Assert.assertEquals(1,dbOperations.updateSalaryUsingPreparedStatement("Apoorv", "300000"));
 
