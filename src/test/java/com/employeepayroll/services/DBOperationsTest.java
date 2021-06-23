@@ -4,8 +4,7 @@ import com.employeepayroll.entity.Employee;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.xml.crypto.Data;
-import java.sql.Date;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -46,5 +45,11 @@ public class DBOperationsTest {
         List<Employee> employeeList = Collections.singletonList(new Employee(8, "Shiveta", "400000",
                 "F", LocalDate.parse("2020-06-20")));
         Assert.assertEquals(1,dbOperations.addEmployee(employeeList));
+    }
+
+    @Test
+    public void givenEmployeeIdAndSalary_WhenUpdatesPayrollDetails_ReturnTrue() {
+        EmployeePayrollDBOperations dbOperations = new EmployeePayrollDBOperations();
+        Assert.assertEquals(1,dbOperations.addPayrollDetails(1,"20000"));
     }
 }

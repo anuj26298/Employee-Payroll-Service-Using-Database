@@ -93,4 +93,28 @@ public class EmployeePayrollDBOperations {
                 Date.valueOf(date1), Date.valueOf(date2));
         return retrieveData(query);
     }
+
+    public int addPayrollDetails(int emp_id, String salary){
+        double basePay = Double.parseDouble(salary);
+        double deduction = basePay * 0.2;
+        double taxablePay = basePay - deduction;
+        double tax = taxablePay * 0.1;
+        double netPay = basePay - tax;
+        GetConnections newConnection = new GetConnections();
+        try {
+            PreparedStatement preparedStatement = newConnection.getDBConnection()
+                    .prepareStatement("insert into payroll_details values(?,?,?,?,?,?)");
+            preparedStatement.setInt(1,emp_id);
+            preparedStatement.setDouble(2,basePay);
+            preparedStatement.setDouble(3, deduction);
+            preparedStatement.setDouble(4, taxablePay);
+            preparedStatement.setDouble(5, tax);
+            preparedStatement.setDouble(6, netPay);
+
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
