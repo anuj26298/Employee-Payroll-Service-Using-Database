@@ -41,6 +41,24 @@ public class EmployeePayrollDBOperations {
         return employeeList;
     }
 
+    public int addEmployee(List<Employee> employeeList){
+        GetConnections newConnection = new GetConnections();
+        try {
+            PreparedStatement preparedStatement = newConnection.getDBConnection()
+                    .prepareStatement("insert into employee_payroll values(" +
+                            "?,?,?,?,?)");
+            preparedStatement.setInt(1,employeeList.get(0).id);
+            preparedStatement.setString(2,employeeList.get(0).name);
+            preparedStatement.setString(3,employeeList.get(0).salary);
+            preparedStatement.setString(4,employeeList.get(0).gender);
+            preparedStatement.setDate(5,Date.valueOf(employeeList.get(0).startDate));
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public int updateSalary(String name, String salary) {
         GetConnections newConnection = new GetConnections();
         try (Connection connection = newConnection.getDBConnection()) {

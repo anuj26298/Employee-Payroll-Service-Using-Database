@@ -4,7 +4,10 @@ import com.employeepayroll.entity.Employee;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.xml.crypto.Data;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class DBOperationsTest {
@@ -35,5 +38,13 @@ public class DBOperationsTest {
         EmployeePayrollDBOperations dbOperations = new EmployeePayrollDBOperations();
         Assert.assertEquals(3, dbOperations.employeesWithInDateRange(LocalDate.of(2020,12,23)
                 ,LocalDate.of(2021,04,26)).size());
+    }
+
+    @Test
+    public void givenEmployeeData_WhenInsertedInDatabase_ReturnNumberOfRowsAffected() {
+        EmployeePayrollDBOperations dbOperations = new EmployeePayrollDBOperations();
+        List<Employee> employeeList = Collections.singletonList(new Employee(8, "Shiveta", "400000",
+                "F", LocalDate.parse("2020-06-20")));
+        Assert.assertEquals(1,dbOperations.addEmployee(employeeList));
     }
 }
