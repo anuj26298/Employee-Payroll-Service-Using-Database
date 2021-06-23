@@ -41,17 +41,17 @@ public class EmployeePayrollDBOperations {
         return employeeList;
     }
 
-    public int addEmployee(List<Employee> employeeList){
+    public int addEmployee(List<Employee> employeeList) {
         GetConnections newConnection = new GetConnections();
         try {
             PreparedStatement preparedStatement = newConnection.getDBConnection()
                     .prepareStatement("insert into employee_payroll values(" +
                             "?,?,?,?,?)");
-            preparedStatement.setInt(1,employeeList.get(0).id);
-            preparedStatement.setString(2,employeeList.get(0).name);
-            preparedStatement.setString(3,employeeList.get(0).salary);
-            preparedStatement.setString(4,employeeList.get(0).gender);
-            preparedStatement.setDate(5,Date.valueOf(employeeList.get(0).startDate));
+            preparedStatement.setInt(1, employeeList.get(0).id);
+            preparedStatement.setString(2, employeeList.get(0).name);
+            preparedStatement.setString(3, employeeList.get(0).salary);
+            preparedStatement.setString(4, employeeList.get(0).gender);
+            preparedStatement.setDate(5, Date.valueOf(employeeList.get(0).startDate));
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,27 +94,64 @@ public class EmployeePayrollDBOperations {
         return retrieveData(query);
     }
 
-    public int addPayrollDetails(int emp_id, String salary){
-        double basePay = Double.parseDouble(salary);
+    public List<Employee> addPayrollDetails(List<Employee> employeeList) {
+        GetConnections newConnection = new GetConnections();
+        try {
+            newConnection.getDBConnection().setAutoCommit(false);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        addEmployee(employeeList);
+
+        try {
+            newConnection.getDBConnection().rollback();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        double basePay = Double.parseDouble(employeeList.get(0).salary);
         double deduction = basePay * 0.2;
         double taxablePay = basePay - deduction;
         double tax = taxablePay * 0.1;
         double netPay = basePay - tax;
-        GetConnections newConnection = new GetConnections();
         try {
             PreparedStatement preparedStatement = newConnection.getDBConnection()
                     .prepareStatement("insert into payroll_details values(?,?,?,?,?,?)");
-            preparedStatement.setInt(1,emp_id);
-            preparedStatement.setDouble(2,basePay);
+            preparedStatement.setInt(1, employeeList.get(0).id);
+            preparedStatement.setDouble(2, basePay);
             preparedStatement.setDouble(3, deduction);
             preparedStatement.setDouble(4, taxablePay);
             preparedStatement.setDouble(5, tax);
             preparedStatement.setDouble(6, netPay);
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.executeQuery("select * from employee_payroll");
 
-            return preparedStatement.executeUpdate();
+            while (resultSet.next()) {
+                id = resultSet.getInt("id");
+                name = resultSet.getString("name");
+                salary = resultSet.getString("salary");
+                startDate = resultSet.getDate("startdate").toLocalDate();
+                gender = resultSet.getString("gender");
+                employeeList.add(new Employee(id, name, salary, gender, startDate));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+
+        try {
+            newConnection.getDBConnection().rollback();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            newConnection.getDBConnection().commit();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            newConnection.getDBConnection().close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return employeeList;
     }
 }
